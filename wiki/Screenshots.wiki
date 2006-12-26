@@ -1,0 +1,10 @@
+#summary Screenshots
+
+= Screenshots =
+
+Preferences
+
+http://eclipse-xps.googlecode.com/files/eclipse-xps-preferences.png
+
+
+
