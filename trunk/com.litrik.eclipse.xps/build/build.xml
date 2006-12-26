@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<project name="com.litrik.eclipse.xps" default="dll" basedir="..">
+
+	<target name="dll" description="Build DLL">
+		<javah class="com.litrik.eclipse.xps.core.LEDs" outputfile="src/com/litrik/eclipse/xps/core/LEDs.h" classpath="bin" />
+		<delete dir="lib" />
+		<mkdir dir="lib" />
+		<exec executable="gcc">
+			<arg value="-mno-cygwin" />
+			<arg value="-Isrc/com/litrik/eclipse/xps/core" />
+			<arg value="-I${java.home}/../include" />
+			<arg value="-I${java.home}/../include/win32" />
+			<arg value="-Wl,--add-stdcall-alias" />
+			<arg value="-shared" />
+			<arg value="-v" />
+			<arg value="-o" />
+			<arg value="lib/com.litrik.eclipse.xps.dll" />
+			<arg value="src/com/litrik/eclipse/xps/core/LEDs.c" />
+		</exec>
+	</target>
+
+</project>
