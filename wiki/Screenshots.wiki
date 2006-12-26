@@ -1,10 +1,10 @@
 #summary Screenshots
+#labels Featured
 
 = Screenshots =
 
 Preferences
 
 http://eclipse-xps.googlecode.com/files/eclipse-xps-preferences.png
-
 
 
