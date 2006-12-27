@@ -1,0 +1,17 @@
+#summary Installation instructions
+
+= Prerequisites =
+
+The *Eclipse XPS* plug-in requires:
+
+  * Dell XPS laptop
+  * Java 1.4 (or higher)
+  * Eclipse 3.2 (or higher)
+
+= Installation Instructions =
+
+  # Download the latest release from ...
+  # Copy the downloaded JAR file into the 'plugins' directory of your Eclipse installation
+  # (Re)Start Eclipse
+
+
