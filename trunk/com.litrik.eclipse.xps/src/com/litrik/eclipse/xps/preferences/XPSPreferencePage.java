@@ -1,5 +1,5 @@
 /**
- Copyright 2006 Litrik De Roy
+ Copyright 2006-2007 Litrik De Roy
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,13 +17,9 @@
 package com.litrik.eclipse.xps.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
-import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.program.Program;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -36,12 +32,21 @@ import com.litrik.eclipse.xps.Activator;
 
 public class XPSPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage
 {
-
+	private static String DESCRIPTION = "Shows JUnit results using the Dell XPS' built-in LEDs.";
+	
+	private static String HOMEPAGE_TEXT = "Visit the <a>project homepage</a>.";
+	private static String HOMEPAGE_URL = "http://code.google.com/p/eclipse-xps/";
+	
+	private static String JUNIT_ENABLED = "&Listen to test runs";
+	private static String JUNIT_COLOR_START = "Start test run:";
+	private static String JUNIT_COLOR_SUCCESS = "Test success:";
+	private static String JUNIT_COLOR_FAILURE = "Test failure:";
+	
 	public XPSPreferencePage()
 	{
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Shows JUnit results using the Dell XPS' built-in LEDs.");
+		setDescription(DESCRIPTION);
 	}
 
 	protected Control createContents(Composite parent)
@@ -49,12 +54,12 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 		Control fieldEditorComposite = super.createContents(parent);
 
 		Link homepageLink = new Link(parent, SWT.NONE);
-		homepageLink.setText("Visit the <a>project homepage</a>.");
+		homepageLink.setText(HOMEPAGE_TEXT);
 		homepageLink.addListener(SWT.Selection, new Listener()
 		{
 			public void handleEvent(Event event)
 			{
-				Program.launch("http://code.google.com/p/eclipse-xps/");
+				Program.launch(HOMEPAGE_URL);
 			}
 		});
 		return fieldEditorComposite;
@@ -62,66 +67,10 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 
 	public void createFieldEditors()
 	{
-		// Composite composite = new Composite(getFieldEditorParent(),
-		// SWT.NONE);
-		// GridLayout compositeLayout = new GridLayout();
-		// compositeLayout.numColumns = 1 ;
-		// composite.setLayout(compositeLayout);
-		// composite.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL |
-		// GridData.GRAB_HORIZONTAL));
-
-		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_ENABLED, "&Listen to test runs", getFieldEditorParent()));
-		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_START, "Start test run:", getFieldEditorParent()));
-		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_SUCCESS, "Test success:", getFieldEditorParent()));
-		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE, "Test failure:", getFieldEditorParent()));
-	}
-
-	private class LEDColorFieldEditor extends FieldEditor
-	{
-		private Combo colorField;
-
-		public LEDColorFieldEditor(String name, String labelText, Composite parent)
-		{
-			super(name, labelText, parent);
-		}
-
-		protected void adjustForNumColumns(int numColumns)
-		{
-
-		}
-
-		protected void doFillIntoGrid(Composite parent, int numColumns)
-		{
-			getLabelControl(parent);
-			colorField = new Combo(parent, SWT.SINGLE | SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
-			GridLayout colorFieldLayout = new GridLayout();
-			colorField.setLayout(colorFieldLayout);
-			colorField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			colorField.setItems(new String[]
-			{ "Off", "Ruby", "Citrine", "Amber", "Peridot", "Emerald", "Jade", "Topaz", "Tanzanite", "Aquamarine", "Sapphire",
-					"Iolite", "Amythest", "Kunzite", "Rhodolite", "Coral", "Diamond" });
-		}
-
-		protected void doLoad()
-		{
-			colorField.select(getPreferenceStore().getInt(getPreferenceName()));
-		}
-
-		protected void doLoadDefault()
-		{
-			colorField.select(getPreferenceStore().getDefaultInt(getPreferenceName()));
-		}
-
-		protected void doStore()
-		{
-			getPreferenceStore().setValue(getPreferenceName(), colorField.getSelectionIndex());
-		}
-
-		public int getNumberOfControls()
-		{
-			return 1;
-		}
-
+		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_ENABLED, JUNIT_ENABLED, getFieldEditorParent()));
+		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_START, JUNIT_COLOR_START, getFieldEditorParent()));
+		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_SUCCESS, JUNIT_COLOR_SUCCESS, getFieldEditorParent()));
+		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE, JUNIT_COLOR_FAILURE, getFieldEditorParent()));
 	}
 
 	public void init(IWorkbench workbench)
