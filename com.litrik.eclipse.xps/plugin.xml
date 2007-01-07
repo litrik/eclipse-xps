@@ -10,7 +10,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            name="XPS LEDs"
+            name="XPS"
             class="com.litrik.eclipse.xps.preferences.XPSPreferencePage"
             id="com.litrik.eclipse.xps.preferencePage">
       </page>
