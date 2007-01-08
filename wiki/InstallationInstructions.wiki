@@ -1,4 +1,5 @@
 #summary Installation instructions
+#labels Featured
 
 = Prerequisites =
 
@@ -10,8 +11,7 @@ The *Eclipse XPS* plug-in requires:
 
 = Installation Instructions =
 
-  # Download the latest release from ...
+  # Download the latest release from http://code.google.com/p/eclipse-xps/downloads/list
   # Copy the downloaded JAR file into the 'plugins' directory of your Eclipse installation
   # (Re)Start Eclipse
-
 
