@@ -3,7 +3,11 @@
 
 = Screenshots =
 
-Preferences
+Preferences of current trunk
+
+http://eclipse-xps.googlecode.com/files/eclipse-xps-preferences-rev-19.png
+
+Preferences of 1.0.0
 
 http://eclipse-xps.googlecode.com/files/eclipse-xps-preferences.png
 
