@@ -103,6 +103,7 @@ public class XPSTestRunListener implements ITestRunListener
 
 	/**
 	 * Helper to set LED colors
+	 * 
 	 * @param color
 	 *            Color of the LEDs, where color is in the range 0-16
 	 */
@@ -110,6 +111,7 @@ public class XPSTestRunListener implements ITestRunListener
 	{
 		LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
 				.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS), store
-				.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL));
+				.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL), store
+				.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS));
 	}
 }
