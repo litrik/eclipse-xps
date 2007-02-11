@@ -28,10 +28,17 @@ public class LEDs
 	 * 
 	 * @param color
 	 *            Color of the LEDs, where color is in the range 0-16
+	 * @param fans
+	 *            Indicates whether fan LEDs should be used
+	 * @param speakers
+	 *            Indicates whether speaker LEDs should be used
+	 * @param panel
+	 *            Indicates whether panel LEDs should be used
 	 */
-	public static void setLeds(int color)
+	public static void setLeds(int color, boolean fans, boolean speakers, boolean panel)
 	{
-		if (setXpsColors((char) color, (char) color, (char) color, (char) 0x07, (char) 0x00) == 0)
+		if (setXpsColors((char) (fans ? color : 0), (char) (speakers ? color : 0), (char) (panel ? color : 0), (char) 0x07,
+				(char) 0x00) == 0)
 		{
 			Activator.getDefault().getLog().log(
 					new Status(IStatus.ERROR, Activator.PLUGIN_ID, Status.OK, "Failed to set XPS LEDs", null));

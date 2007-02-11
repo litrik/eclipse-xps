@@ -54,7 +54,7 @@ public class XPSTestRunListener implements ITestRunListener
 		if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_ENABLED))
 		{
 			hasFailures = true;
-			LEDs.setLeds(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE));
+			setLEDColor(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE));
 		}
 	}
 
@@ -69,7 +69,7 @@ public class XPSTestRunListener implements ITestRunListener
 		{
 			if (!hasFailures)
 			{
-				LEDs.setLeds(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_SUCCESS));
+				setLEDColor(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_SUCCESS));
 			}
 		}
 	}
@@ -79,7 +79,7 @@ public class XPSTestRunListener implements ITestRunListener
 		if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_ENABLED))
 		{
 			hasFailures = false;
-			LEDs.setLeds(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_START));
+			setLEDColor(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_START));
 		}
 	}
 
@@ -87,7 +87,7 @@ public class XPSTestRunListener implements ITestRunListener
 	{
 		if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_ENABLED))
 		{
-			LEDs.setLeds(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE));
+			setLEDColor(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE));
 		}
 	}
 
@@ -101,4 +101,15 @@ public class XPSTestRunListener implements ITestRunListener
 	// Not interested in this event
 	}
 
+	/**
+	 * Helper to set LED colors
+	 * @param color
+	 *            Color of the LEDs, where color is in the range 0-16
+	 */
+	private void setLEDColor(int color)
+	{
+		LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
+				.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS), store
+				.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL));
+	}
 }

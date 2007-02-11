@@ -19,10 +19,13 @@ package com.litrik.eclipse.xps.preferences;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
@@ -33,15 +36,20 @@ import com.litrik.eclipse.xps.Activator;
 public class XPSPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage
 {
 	private static String DESCRIPTION = "Shows JUnit results using the Dell XPS' built-in LEDs.";
-	
+
 	private static String HOMEPAGE_TEXT = "Visit the <a>project homepage</a>.";
 	private static String HOMEPAGE_URL = "http://code.google.com/p/eclipse-xps/";
-	
+
 	private static String JUNIT_ENABLED = "&Listen to test runs";
+	private static String JUNIT_COLOR = "Colors";
 	private static String JUNIT_COLOR_START = "Start test run:";
 	private static String JUNIT_COLOR_SUCCESS = "Test success:";
 	private static String JUNIT_COLOR_FAILURE = "Test failure:";
-	
+	private static String JUNIT_LOCATION = "LEDs";
+	private static String JUNIT_LOCATION_FANS = "Fans";
+	private static String JUNIT_LOCATION_SPEAKERS = "Speakers";
+	private static String JUNIT_LOCATION_PANEL = "Panel back";
+
 	public XPSPreferencePage()
 	{
 		super(GRID);
@@ -68,9 +76,34 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 	public void createFieldEditors()
 	{
 		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_ENABLED, JUNIT_ENABLED, getFieldEditorParent()));
-		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_START, JUNIT_COLOR_START, getFieldEditorParent()));
-		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_SUCCESS, JUNIT_COLOR_SUCCESS, getFieldEditorParent()));
-		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE, JUNIT_COLOR_FAILURE, getFieldEditorParent()));
+
+		Group colorGroup = new Group(getFieldEditorParent(), SWT.NONE);
+		colorGroup.setText(JUNIT_COLOR);
+		GridLayout colorGroupLayout = new GridLayout();
+		colorGroup.setLayout(colorGroupLayout);
+		colorGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		Composite colorComposite = new Composite(colorGroup, SWT.NONE);
+		GridLayout colorCompositeLayout = new GridLayout();
+		colorComposite.setLayout(colorCompositeLayout);
+		colorCompositeLayout.marginLeft = 20;
+		colorComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_START, JUNIT_COLOR_START, colorComposite));
+		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_SUCCESS, JUNIT_COLOR_SUCCESS, colorComposite));
+		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE, JUNIT_COLOR_FAILURE, colorComposite));
+
+		Group locationGroup = new Group(getFieldEditorParent(), SWT.NONE);
+		locationGroup.setText(JUNIT_LOCATION);
+		GridLayout locationGroupLayout = new GridLayout();
+		locationGroup.setLayout(locationGroupLayout);
+		locationGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		Composite locationComposite = new Composite(locationGroup, SWT.NONE);
+		GridLayout locationCompositeLayout = new GridLayout();
+		locationComposite.setLayout(locationCompositeLayout);
+		locationCompositeLayout.marginLeft = 20;
+		locationComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS, JUNIT_LOCATION_FANS, locationComposite));
+		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS, JUNIT_LOCATION_SPEAKERS, locationComposite));
+		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL, JUNIT_LOCATION_PANEL, locationComposite));
 	}
 
 	public void init(IWorkbench workbench)

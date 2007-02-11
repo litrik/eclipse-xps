@@ -25,4 +25,7 @@ public class XPSPreferenceConstants
 	public static final String P_JUNIT_COLOR_START = "junitColorStartPreference";
 	public static final String P_JUNIT_COLOR_SUCCESS = "junitColorSuccessPreference";
 	public static final String P_JUNIT_COLOR_FAILURE = "junitColorFailurePreference";
+	public static final String P_JUNIT_LOCATION_FANS = "junitLocationFansPreference";
+	public static final String P_JUNIT_LOCATION_SPEAKERS = "junitLocationSpeakersPreference";
+	public static final String P_JUNIT_LOCATION_PANEL = "junitLocationPanelPreference";
 }

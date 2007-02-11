@@ -34,6 +34,9 @@ public class XPSPreferenceInitializer extends AbstractPreferenceInitializer
 		store.setDefault(XPSPreferenceConstants.P_JUNIT_COLOR_START, 0);
 		store.setDefault(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE, 1);
 		store.setDefault(XPSPreferenceConstants.P_JUNIT_COLOR_SUCCESS, 5);
+		store.setDefault(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS, true);
+		store.setDefault(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS, true);
+		store.setDefault(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL, true);
 	}
 
 }
