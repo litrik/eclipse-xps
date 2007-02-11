@@ -71,4 +71,8 @@ class LEDColorFieldEditor extends FieldEditor
 		return 1;
 	}
 
+	public int getCurrentValue()
+	{
+		return colorField.getSelectionIndex();
+	}
 }
