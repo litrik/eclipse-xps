@@ -20,9 +20,12 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.program.Program;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -33,6 +36,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.litrik.eclipse.xps.Activator;
+import com.litrik.eclipse.xps.core.LEDs;
 
 public class XPSPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage
 {
@@ -79,38 +83,102 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 	{
 		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_ENABLED, JUNIT_ENABLED, getFieldEditorParent()));
 
+		// A group for the color preferences
 		Group colorGroup = new Group(getFieldEditorParent(), SWT.NONE);
 		colorGroup.setText(JUNIT_COLOR);
+
+		// The color when a test run starts
+		final LEDColorFieldEditor startLEDColorFieldEditor = new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_START,
+				JUNIT_COLOR_START, colorGroup);
+		addField(startLEDColorFieldEditor);
+		// A preview button
+		final Button previewStartButton = new Button(colorGroup, SWT.NONE);
+		previewStartButton.setText("Preview");
+
+		// The color when a test run was successful
+		final LEDColorFieldEditor successLEDColorFieldEditor = new LEDColorFieldEditor(
+				XPSPreferenceConstants.P_JUNIT_COLOR_SUCCESS, JUNIT_COLOR_SUCCESS, colorGroup);
+		addField(successLEDColorFieldEditor);
+		// A preview button
+		final Button previewSuccessButton = new Button(colorGroup, SWT.NONE);
+		previewSuccessButton.setText("Preview");
+
+		// The color when a test failed
+		final LEDColorFieldEditor failureLEDColorFieldEditor = new LEDColorFieldEditor(
+				XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE, JUNIT_COLOR_FAILURE, colorGroup);
+		addField(failureLEDColorFieldEditor);
+		// A preview button
+		final Button previewFailureButton = new Button(colorGroup, SWT.NONE);
+		previewFailureButton.setText("Preview");
+
+		// The brightness
+		final ScaleFieldEditor brightnessScaleFieldEditor = new ScaleFieldEditor(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS,
+				JUNIT_BRIGHTNESS, colorGroup, 1, 7, 1, 1);
+		addField(brightnessScaleFieldEditor);
+
+		// Layout the group
 		GridLayout colorGroupLayout = new GridLayout();
+		colorGroupLayout.numColumns = 3;
 		colorGroup.setLayout(colorGroupLayout);
 		GridData colorGroupGridData = new GridData(GridData.FILL_HORIZONTAL);
 		colorGroupGridData.horizontalSpan = 2;
 		colorGroup.setLayoutData(colorGroupGridData);
-		Composite colorComposite = new Composite(colorGroup, SWT.NONE);
-		GridLayout colorCompositeLayout = new GridLayout();
-		colorComposite.setLayout(colorCompositeLayout);
-		colorCompositeLayout.marginLeft = 20;
-		colorComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_START, JUNIT_COLOR_START, colorComposite));
-		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_SUCCESS, JUNIT_COLOR_SUCCESS, colorComposite));
-		addField(new LEDColorFieldEditor(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE, JUNIT_COLOR_FAILURE, colorComposite));
 
+		// A group for the LED location preferences
 		Group locationGroup = new Group(getFieldEditorParent(), SWT.NONE);
 		locationGroup.setText(JUNIT_LOCATION);
+
+		// Fan LEDs
+		final BooleanFieldEditor fansBooleanFieldEditor = new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS,
+				JUNIT_LOCATION_FANS, locationGroup);
+		addField(fansBooleanFieldEditor);
+
+		// Speaker LEDs
+		final BooleanFieldEditor speakersBooleanFieldEditor = new BooleanFieldEditor(
+				XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS, JUNIT_LOCATION_SPEAKERS, locationGroup);
+		addField(speakersBooleanFieldEditor);
+
+		// Panel back LEDs
+		final BooleanFieldEditor panelBooleanFieldEditor = new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL,
+				JUNIT_LOCATION_PANEL, locationGroup);
+		addField(panelBooleanFieldEditor);
+
+		// Layout the group
 		GridLayout locationGroupLayout = new GridLayout();
 		locationGroup.setLayout(locationGroupLayout);
-		locationGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		Composite locationComposite = new Composite(locationGroup, SWT.NONE);
-		GridLayout locationCompositeLayout = new GridLayout();
-		locationComposite.setLayout(locationCompositeLayout);
-		locationCompositeLayout.marginLeft = 20;
-		locationComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS, JUNIT_LOCATION_FANS, locationComposite));
-		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS, JUNIT_LOCATION_SPEAKERS,
-				locationComposite));
-		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL, JUNIT_LOCATION_PANEL, locationComposite));
+		GridData locationGroupGridData = new GridData(GridData.FILL_HORIZONTAL);
+		locationGroupGridData.horizontalSpan = 2;
+		locationGroup.setLayoutData(locationGroupGridData);
 
-		addField(new ScaleFieldEditor(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS, JUNIT_BRIGHTNESS, colorComposite, 1, 7, 1, 1));
+		// Let the "Preview" buttons do something
+		previewStartButton.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				LEDs.setLeds(startLEDColorFieldEditor.getCurrentValue(), fansBooleanFieldEditor.getBooleanValue(),
+						speakersBooleanFieldEditor.getBooleanValue(), panelBooleanFieldEditor.getBooleanValue(),
+						brightnessScaleFieldEditor.getScaleControl().getSelection());
+			}
+		});
+		previewSuccessButton.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				LEDs.setLeds(successLEDColorFieldEditor.getCurrentValue(), fansBooleanFieldEditor.getBooleanValue(),
+						speakersBooleanFieldEditor.getBooleanValue(), panelBooleanFieldEditor.getBooleanValue(),
+						brightnessScaleFieldEditor.getScaleControl().getSelection());
+			}
+		});
+		previewFailureButton.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				LEDs.setLeds(failureLEDColorFieldEditor.getCurrentValue(), fansBooleanFieldEditor.getBooleanValue(),
+						speakersBooleanFieldEditor.getBooleanValue(), panelBooleanFieldEditor.getBooleanValue(),
+						brightnessScaleFieldEditor.getScaleControl().getSelection());
+			}
+		});
+
 	}
 
 	public void init(IWorkbench workbench)
