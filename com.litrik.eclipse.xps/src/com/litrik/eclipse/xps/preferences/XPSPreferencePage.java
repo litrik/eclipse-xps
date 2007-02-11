@@ -18,6 +18,7 @@ package com.litrik.eclipse.xps.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -49,6 +50,7 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 	private static String JUNIT_LOCATION_FANS = "Fans";
 	private static String JUNIT_LOCATION_SPEAKERS = "Speakers";
 	private static String JUNIT_LOCATION_PANEL = "Panel back";
+	private static String JUNIT_BRIGHTNESS = "Brightness:";
 
 	public XPSPreferencePage()
 	{
@@ -81,7 +83,9 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 		colorGroup.setText(JUNIT_COLOR);
 		GridLayout colorGroupLayout = new GridLayout();
 		colorGroup.setLayout(colorGroupLayout);
-		colorGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		GridData colorGroupGridData = new GridData(GridData.FILL_HORIZONTAL);
+		colorGroupGridData.horizontalSpan = 2;
+		colorGroup.setLayoutData(colorGroupGridData);
 		Composite colorComposite = new Composite(colorGroup, SWT.NONE);
 		GridLayout colorCompositeLayout = new GridLayout();
 		colorComposite.setLayout(colorCompositeLayout);
@@ -102,8 +106,11 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 		locationCompositeLayout.marginLeft = 20;
 		locationComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS, JUNIT_LOCATION_FANS, locationComposite));
-		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS, JUNIT_LOCATION_SPEAKERS, locationComposite));
+		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS, JUNIT_LOCATION_SPEAKERS,
+				locationComposite));
 		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL, JUNIT_LOCATION_PANEL, locationComposite));
+
+		addField(new ScaleFieldEditor(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS, JUNIT_BRIGHTNESS, colorComposite, 1, 7, 1, 1));
 	}
 
 	public void init(IWorkbench workbench)

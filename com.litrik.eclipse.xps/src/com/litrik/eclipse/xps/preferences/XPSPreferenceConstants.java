@@ -28,4 +28,5 @@ public class XPSPreferenceConstants
 	public static final String P_JUNIT_LOCATION_FANS = "junitLocationFansPreference";
 	public static final String P_JUNIT_LOCATION_SPEAKERS = "junitLocationSpeakersPreference";
 	public static final String P_JUNIT_LOCATION_PANEL = "junitLocationPanelPreference";
+	public static final String P_JUNIT_BRIGHTNESS = "junitBrightnessPreference";
 }

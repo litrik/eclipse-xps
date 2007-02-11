@@ -35,9 +35,9 @@ public class LEDs
 	 * @param panel
 	 *            Indicates whether panel LEDs should be used
 	 */
-	public static void setLeds(int color, boolean fans, boolean speakers, boolean panel)
+	public static void setLeds(int color, boolean fans, boolean speakers, boolean panel, int brightness)
 	{
-		if (setXpsColors((char) (fans ? color : 0), (char) (speakers ? color : 0), (char) (panel ? color : 0), (char) 0x07,
+		if (setXpsColors((char) (fans ? color : 0), (char) (speakers ? color : 0), (char) (panel ? color : 0), (char) brightness,
 				(char) 0x00) == 0)
 		{
 			Activator.getDefault().getLog().log(

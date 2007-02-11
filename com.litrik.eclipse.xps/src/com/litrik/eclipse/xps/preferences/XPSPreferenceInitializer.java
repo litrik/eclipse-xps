@@ -37,6 +37,7 @@ public class XPSPreferenceInitializer extends AbstractPreferenceInitializer
 		store.setDefault(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS, true);
 		store.setDefault(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS, true);
 		store.setDefault(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL, true);
+		store.setDefault(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS, 7);
 	}
 
 }
