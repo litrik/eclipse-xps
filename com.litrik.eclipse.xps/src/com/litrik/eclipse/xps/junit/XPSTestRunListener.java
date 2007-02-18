@@ -26,14 +26,32 @@ import com.litrik.eclipse.xps.preferences.XPSPreferenceConstants;
 /**
  * Listener for JUnit test runs that sets the XPS' LEDs.
  */
-public class XPSTestRunListener implements ITestRunListener
+public class XPSTestRunListener implements ITestRunListener, Runnable
 {
 	/**
 	 * Indicates whether a failure occured during the test run.
 	 */
 	private boolean hasFailures;
 
+	/**
+	 * The preference store
+	 */
 	private IPreferenceStore store;
+
+	/**
+	 * The thread changing the LEDs
+	 */
+	private Thread ledThread;
+
+	/**
+	 * The name of the thread changing the LEDs
+	 */
+	private static String ledThreadName = "XPS LEDs";
+
+	/**
+	 * The current color
+	 */
+	private int color = 0;
 
 	/**
 	 * Constructor.
@@ -54,7 +72,7 @@ public class XPSTestRunListener implements ITestRunListener
 		if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_ENABLED))
 		{
 			hasFailures = true;
-			setLEDColor(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE));
+			color = store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE);
 		}
 	}
 
@@ -69,8 +87,10 @@ public class XPSTestRunListener implements ITestRunListener
 		{
 			if (!hasFailures)
 			{
-				setLEDColor(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_SUCCESS));
+				color = store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_SUCCESS);
 			}
+			// Tell the thread to stop
+			ledThread = null;
 		}
 	}
 
@@ -79,7 +99,10 @@ public class XPSTestRunListener implements ITestRunListener
 		if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_ENABLED))
 		{
 			hasFailures = false;
-			setLEDColor(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_START));
+			// Start the thread
+			ledThread = new Thread(this);
+			ledThread.setName(ledThreadName);
+			ledThread.start();
 		}
 	}
 
@@ -87,7 +110,9 @@ public class XPSTestRunListener implements ITestRunListener
 	{
 		if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_ENABLED))
 		{
-			setLEDColor(store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE));
+			color = store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE);
+			// Tell the thread to stop
+			ledThread = null;
 		}
 	}
 
@@ -101,17 +126,38 @@ public class XPSTestRunListener implements ITestRunListener
 	// Not interested in this event
 	}
 
-	/**
-	 * Helper to set LED colors
-	 * 
-	 * @param color
-	 *            Color of the LEDs, where color is in the range 0-16
-	 */
-	private void setLEDColor(int color)
+	public void run()
 	{
-		LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
-				.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS), store
-				.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL), store
-				.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS));
+		Thread thisThread = Thread.currentThread();
+		// The color to get started
+		color = store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_START);
+		// The maximum pulse/brigthness
+		int maxPulse = store.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS);
+		// The current pulse/brigthness
+		int pulse = store.getBoolean(XPSPreferenceConstants.P_JUNIT_PULSATE) ? 0 : maxPulse;
+		try
+		{
+			while (ledThread == thisThread)
+			{
+				LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
+						.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS), store
+						.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL), Math.abs(pulse));
+				if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_PULSATE))
+				{
+					// Calculate new pulse/brightness
+					pulse = (pulse == -maxPulse) ? (maxPulse - 1) : (pulse - 1) % (maxPulse + 1);
+				}
+				Thread.sleep(75);
+			}
+			// We'ves stopped. Set brightness to preferred value.
+			LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
+					.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS), store
+					.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL), store
+					.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS));
+		}
+		catch (InterruptedException e)
+		{
+			// Do nothing
+		}
 	}
 }

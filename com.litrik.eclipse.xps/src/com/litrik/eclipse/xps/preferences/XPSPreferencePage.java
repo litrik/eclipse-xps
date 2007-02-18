@@ -55,6 +55,7 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 	private static String JUNIT_LOCATION_SPEAKERS = "Speakers";
 	private static String JUNIT_LOCATION_PANEL = "Panel back";
 	private static String JUNIT_BRIGHTNESS = "Brightness:";
+	private static String JUNIT_PULSE = "Pulsate";
 
 	public XPSPreferencePage()
 	{
@@ -115,6 +116,9 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 		final ScaleFieldEditor brightnessScaleFieldEditor = new ScaleFieldEditor(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS,
 				JUNIT_BRIGHTNESS, colorGroup, 1, 7, 1, 1);
 		addField(brightnessScaleFieldEditor);
+
+		// Pulsate
+		addField(new BooleanFieldEditor(XPSPreferenceConstants.P_JUNIT_PULSATE, JUNIT_PULSE, colorGroup));
 
 		// Layout the group
 		GridLayout colorGroupLayout = new GridLayout();
