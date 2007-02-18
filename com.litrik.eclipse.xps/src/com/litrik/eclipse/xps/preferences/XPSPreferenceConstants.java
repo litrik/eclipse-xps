@@ -30,4 +30,6 @@ public class XPSPreferenceConstants
 	public static final String P_JUNIT_LOCATION_PANEL = "junitLocationPanelPreference";
 	public static final String P_JUNIT_BRIGHTNESS = "junitBrightnessPreference";
 	public static final String P_JUNIT_PULSATE = "junitPulsatePreference";
+	public static final String P_JUNIT_TIMEOUT_SUCCESS = "junitTimeoutSuccessPreference";
+	public static final String P_JUNIT_TIMEOUT_FAILURE = "junitTimeoutFailurePreference";
 }

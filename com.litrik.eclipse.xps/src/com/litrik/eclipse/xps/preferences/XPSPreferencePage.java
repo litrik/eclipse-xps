@@ -18,6 +18,7 @@ package com.litrik.eclipse.xps.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.ScaleFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -30,6 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
@@ -56,6 +58,10 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 	private static String JUNIT_LOCATION_PANEL = "Panel back";
 	private static String JUNIT_BRIGHTNESS = "Brightness:";
 	private static String JUNIT_PULSE = "Pulsate";
+	private static String JUNIT_TIMEOUT = "Automatically turn LEDs off";
+	private static String JUNIT_TIMEOUT_SUCCESS = "Time-out after success:";
+	private static String JUNIT_TIMEOUT_FAILURE = "Time-out after failure:";
+	private static String JUNIT_TIMEOUT_SECONDS = "seconds";
 
 	public XPSPreferencePage()
 	{
@@ -127,6 +133,28 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 		GridData colorGroupGridData = new GridData(GridData.FILL_HORIZONTAL);
 		colorGroupGridData.horizontalSpan = 2;
 		colorGroup.setLayoutData(colorGroupGridData);
+
+		// A group for the time-out preferences
+		Group timeOutGroup = new Group(getFieldEditorParent(), SWT.NONE);
+		timeOutGroup.setText(JUNIT_TIMEOUT);
+
+		// The time-out after success
+		addField(new IntegerFieldEditor(XPSPreferenceConstants.P_JUNIT_TIMEOUT_SUCCESS, JUNIT_TIMEOUT_SUCCESS, timeOutGroup, 3));
+		final Label secondsSuccessLabel = new Label(timeOutGroup, SWT.NONE);
+		secondsSuccessLabel.setText(JUNIT_TIMEOUT_SECONDS);
+
+		// The time-out after failure
+		addField(new IntegerFieldEditor(XPSPreferenceConstants.P_JUNIT_TIMEOUT_FAILURE, JUNIT_TIMEOUT_FAILURE, timeOutGroup, 3));
+		final Label secondsFailureLabel = new Label(timeOutGroup, SWT.NONE);
+		secondsFailureLabel.setText(JUNIT_TIMEOUT_SECONDS);
+
+		// Layout the group
+		GridLayout timeOutGroupLayout = new GridLayout();
+		timeOutGroupLayout.numColumns = 3;
+		timeOutGroup.setLayout(timeOutGroupLayout);
+		GridData timeOutGroupGridData = new GridData(GridData.FILL_HORIZONTAL);
+		timeOutGroupGridData.horizontalSpan = 2;
+		timeOutGroup.setLayoutData(timeOutGroupGridData);
 
 		// A group for the LED location preferences
 		Group locationGroup = new Group(getFieldEditorParent(), SWT.NONE);
