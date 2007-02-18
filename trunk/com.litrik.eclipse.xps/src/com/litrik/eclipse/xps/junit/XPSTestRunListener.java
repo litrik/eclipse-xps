@@ -149,15 +149,26 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 				}
 				Thread.sleep(75);
 			}
-			// We'ves stopped. Set brightness to preferred value.
+			// We have stopped. Set brightness to preferred value.
 			LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
 					.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS), store
 					.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL), store
 					.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS));
+			// Should we time-out and turn the LEDs off?
+			if (hasFailures && store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_FAILURE) > 0)
+			{
+				Thread.sleep(store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_FAILURE) * 1000);
+				LEDs.setLeds(0, true, true, true, 0);
+			}
+			else if (!hasFailures && store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_SUCCESS) > 0)
+			{
+				Thread.sleep(store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_SUCCESS) * 1000);
+				LEDs.setLeds(0, true, true, true, 0);
+			}
 		}
 		catch (InterruptedException e)
 		{
-			// Do nothing
+			LEDs.setLeds(0, true, true, true, 0);
 		}
 	}
 }

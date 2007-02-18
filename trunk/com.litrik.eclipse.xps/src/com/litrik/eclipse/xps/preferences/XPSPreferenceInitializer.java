@@ -39,6 +39,8 @@ public class XPSPreferenceInitializer extends AbstractPreferenceInitializer
 		store.setDefault(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL, true);
 		store.setDefault(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS, 7);
 		store.setDefault(XPSPreferenceConstants.P_JUNIT_PULSATE, true);
+		store.setDefault(XPSPreferenceConstants.P_JUNIT_TIMEOUT_SUCCESS, 5);
+		store.setDefault(XPSPreferenceConstants.P_JUNIT_TIMEOUT_FAILURE, 0);
 	}
 
 }
