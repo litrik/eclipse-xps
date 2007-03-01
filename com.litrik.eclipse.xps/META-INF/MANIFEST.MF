@@ -7,7 +7,8 @@ Bundle-Vendor: litrik.com
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.junit,
- org.eclipse.ui
+ org.eclipse.ui,
+ org.eclipse.help
 Eclipse-LazyStart: true
 Bundle-Activator: com.litrik.eclipse.xps.Activator
 Bundle-NativeCode: /lib/com.litrik.eclipse.xps.dll;osname=win32;processor=x86

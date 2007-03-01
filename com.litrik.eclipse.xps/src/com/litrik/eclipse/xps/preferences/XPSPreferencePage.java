@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 
 import com.litrik.eclipse.xps.Activator;
 import com.litrik.eclipse.xps.core.LEDs;
@@ -73,6 +74,7 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 	protected Control createContents(Composite parent)
 	{
 		Control fieldEditorComposite = super.createContents(parent);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, "com.litrik.eclipse.xps.pref");
 
 		Link homepageLink = new Link(parent, SWT.NONE);
 		homepageLink.setText(HOMEPAGE_TEXT);
