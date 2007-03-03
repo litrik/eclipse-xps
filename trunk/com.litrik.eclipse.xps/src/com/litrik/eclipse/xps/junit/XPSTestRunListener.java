@@ -132,7 +132,7 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 		// The color to get started
 		color = store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_START);
 		// The maximum pulse/brigthness
-		int maxPulse = store.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS);
+		int maxPulse = store.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS) - 1 ;
 		// The current pulse/brigthness
 		int pulse = store.getBoolean(XPSPreferenceConstants.P_JUNIT_PULSATE) ? 0 : maxPulse;
 		try
@@ -141,13 +141,13 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 			{
 				LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
 						.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS), store
-						.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL), Math.abs(pulse));
+						.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL), Math.abs(pulse) + 1);
 				if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_PULSATE))
 				{
 					// Calculate new pulse/brightness
 					pulse = (pulse == -maxPulse) ? (maxPulse - 1) : (pulse - 1) % (maxPulse + 1);
 				}
-				Thread.sleep(75);
+				Thread.sleep(50);
 			}
 			// We have stopped. Set brightness to preferred value.
 			LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
