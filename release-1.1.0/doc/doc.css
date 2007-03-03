@@ -1,0 +1,25 @@
+body {
+	font-family: Arial, sans-serif;
+	font-size: 10pt;
+	margin: 0.5em;
+}
+
+h2 {
+	font-size: 13pt;
+	margin: 0px;
+	padding: 0px;
+}
+
+dl dt {
+	margin-top: 0.5em;
+	font-weight: bold;
+}
+
+dl dd {
+	margin-top: 0.5em;
+	margin-left: 1em;
+}
+
+tt {
+	font-size: 100%;
+}
