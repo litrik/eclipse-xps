@@ -1,0 +1,25 @@
+#summary Instructions how to build from source and make a release
+
+Build native code (only needed if src/com/litrik/eclipse/xps/core/LEDs.c was changed)
+  # Execute build/build.xml
+
+Prepare the release:
+  # Update doc/changes.html
+  # Increase Bundle-Version in META-INF/MANIFEST.MF
+
+Build/export the plug-in:
+  # Select "Export..." in context menu of the project
+  # Select "Deployable plug-ins and features"
+  # Click "Next >"
+  # Enter directory to export the plug-in
+
+Release the new version of the plug-in:
+  # Upload the new release to [http://code.google.com/p/eclipse-xps/downloads/list the download page] and label it as "Featured"
+  # Remove the "Featured" label from the previous release
+  # Update RecentChanges on the wiki
+  # Update the plug-in details at [http://www.eclipseplugincentral.com/Web_Links-index-req-viewlink-cid-840.html Eclipse Plug-in Central]
+
+
+
+
+
