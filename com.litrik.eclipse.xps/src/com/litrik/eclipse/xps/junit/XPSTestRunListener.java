@@ -41,7 +41,7 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 	/**
 	 * The thread changing the LEDs
 	 */
-	private Thread ledThread;
+	private volatile Thread ledThread;
 
 	/**
 	 * The name of the thread changing the LEDs
@@ -51,7 +51,7 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 	/**
 	 * The current color
 	 */
-	private int color = 0;
+	private volatile int color = 0;
 
 	/**
 	 * Constructor.
@@ -131,13 +131,13 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 		Thread thisThread = Thread.currentThread();
 		// The color to get started
 		color = store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_START);
-		// The maximum pulse/brigthness
+		// The maximum pulse/brightness
 		int maxPulse = store.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS) - 1 ;
 		// The current pulse/brigthness
 		int pulse = store.getBoolean(XPSPreferenceConstants.P_JUNIT_PULSATE) ? 0 : maxPulse;
 		try
 		{
-			while (ledThread == thisThread)
+			while (ledThread == thisThread) // http://java.sun.com/j2se/1.4.2/docs/guide/misc/threadPrimitiveDeprecation.html
 			{
 				LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
 						.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS), store
