@@ -31,7 +31,7 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 	/**
 	 * Indicates whether a failure occured during the test run.
 	 */
-	private boolean hasFailures;
+	private volatile boolean hasFailures;
 
 	/**
 	 * The preference store
@@ -98,6 +98,7 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 	{
 		if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_ENABLED))
 		{
+			color = store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_START);
 			hasFailures = false;
 			// Start the thread
 			ledThread = new Thread(this);
@@ -129,11 +130,9 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 	public void run()
 	{
 		Thread thisThread = Thread.currentThread();
-		// The color to get started
-		color = store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_START);
 		// The maximum pulse/brightness
 		int maxPulse = store.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS) - 1 ;
-		// The current pulse/brigthness
+		// The current pulse/brightness
 		int pulse = store.getBoolean(XPSPreferenceConstants.P_JUNIT_PULSATE) ? 0 : maxPulse;
 		try
 		{
