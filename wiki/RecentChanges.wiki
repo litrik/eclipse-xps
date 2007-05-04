@@ -1,8 +1,6 @@
 #summary Recent changes
 #labels Featured
 
-= Recent Changes =
-
 1.1.1 (2007-03-07)
 
   * Fixed race condition which caused the LEDs to show the start color at the end of a really short test run. Contributed by Nick Hofstede. ([http://code.google.com/p/eclipse-xps/issues/detail?id=9 Issue 9])
@@ -19,5 +17,4 @@
 1.0.0 (2007-01-08) 
 
   * Initial release. 
-
 
