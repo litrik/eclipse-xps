@@ -19,8 +19,9 @@
 
 	<target name="dll" description="Build DLL">
 		<property name="sdk.home" value="C:\Program Files\Dell\XPS LightFX SDK"/>
-		<delete file="lib/GamingSDK.dll" />
-		<copy file="${sdk.home}/dll/GamingSDK.dll" todir="lib"/>
+		<delete dir="lib/dell" />
+		<copy file="${sdk.home}/dll/WinXP/Win32/GamingSDK.dll" todir="lib/dell/xp"/>
+		<copy file="${sdk.home}/dll/Vista/Win32/GamingSDK.dll" todir="lib/dell/vista"/>
 		<javah class="com.litrik.eclipse.xps.core.LEDs" outputfile="src/com/litrik/eclipse/xps/core/LEDs.h" classpath="bin" />
 		<delete file="lib/com.litrik.eclipse.xps.dll" />
 		<exec executable="g++">
@@ -32,7 +33,7 @@
 			<arg value="-Wl,--add-stdcall-alias" />
 			<arg value="-shared" />
 			<arg value="-v" />
-			<arg value="-Llib/" />
+			<arg value="-Llib/dell/xp/" />
 			<arg value="-lGamingSDK" />
 			<arg value="-o" />
 			<arg value="lib/com.litrik.eclipse.xps.dll" />
