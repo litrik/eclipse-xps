@@ -21,8 +21,6 @@
 
 #include <LEDDecl.h>
 
-#define BUFF_SIZE 0x2c
-
 JNIEXPORT jint JNICALL Java_com_litrik_eclipse_xps_core_LEDs_setXpsColors
   (JNIEnv *env, jclass clazz, jchar side_color, jchar front_color, jchar top_color, jchar brightness, jchar touchpad_light)
 {
