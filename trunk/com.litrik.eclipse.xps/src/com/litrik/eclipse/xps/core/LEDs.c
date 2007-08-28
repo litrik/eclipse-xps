@@ -24,8 +24,7 @@
 JNIEXPORT jint JNICALL Java_com_litrik_eclipse_xps_core_LEDs_setXpsColors
   (JNIEnv *env, jclass clazz, jchar side_color, jchar front_color, jchar top_color, jchar brightness, jchar touchpad_light)
 {
-	LED_CAPS l_LEDCaps = NONE;
-	GetCapabilities(&l_LEDCaps);
+	LED_CAPS l_LEDCaps = InitSDK();
 	
 	NBK_LED_USER_SETTINGS l_Settings = {0};
 	l_Settings.ClrZone1 = side_color;
@@ -33,6 +32,10 @@ JNIEXPORT jint JNICALL Java_com_litrik_eclipse_xps_core_LEDs_setXpsColors
 	l_Settings.ClrZone3 = top_color;
 	l_Settings.ClrZone4 = OFF;
 	l_Settings.IntLevel = brightness;
-	return SetLEDSettings(&l_Settings, l_LEDCaps);
+	BOOL ret = SetLEDSettings(&l_Settings, l_LEDCaps);
+	
+	ReleaseSDK();
+	
+	return ret;
 }
 
