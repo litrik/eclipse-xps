@@ -23,6 +23,10 @@ import com.litrik.eclipse.xps.Activator;
 
 public class LEDs
 {
+	private static String ERROR_MESSAGE = "An unexpected error occurred when setting the XPS LEDs. This message will not be logged again.";
+
+	private static boolean firstError = true;
+
 	/**
 	 * Set the XPS' LEDs.
 	 * 
@@ -38,8 +42,12 @@ public class LEDs
 			if (setXpsColors((char) (fans ? color : 0), (char) (speakers ? color : 0), (char) (panel ? color : 0),
 					(char) brightness, (char) 0x00) == 0)
 			{
-				Activator.getDefault().getLog().log(
-						new Status(IStatus.ERROR, Activator.PLUGIN_ID, Status.OK, "Failed to set XPS LEDs", null));
+				if (firstError)
+				{
+					Activator.getDefault().getLog().log(
+							new Status(IStatus.ERROR, Activator.PLUGIN_ID, Status.OK, ERROR_MESSAGE, null));
+					firstError = false;
+				}
 			}
 		}
 	}
