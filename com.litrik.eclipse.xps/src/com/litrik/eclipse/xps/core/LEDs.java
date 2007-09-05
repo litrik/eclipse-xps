@@ -1,5 +1,5 @@
 /**
- Copyright 2006 Litrik De Roy
+ Copyright 2006-2007 Litrik De Roy
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -26,38 +26,35 @@ public class LEDs
 	/**
 	 * Set the XPS' LEDs.
 	 * 
-	 * @param color
-	 *            Color of the LEDs, where color is in the range 0-16
-	 * @param fans
-	 *            Indicates whether fan LEDs should be used
-	 * @param speakers
-	 *            Indicates whether speaker LEDs should be used
-	 * @param panel
-	 *            Indicates whether panel LEDs should be used
+	 * @param color Color of the LEDs, where color is in the range 0-16
+	 * @param fans Indicates whether fan LEDs should be used
+	 * @param speakers Indicates whether speaker LEDs should be used
+	 * @param panel Indicates whether panel LEDs should be used
 	 */
 	public static void setLeds(int color, boolean fans, boolean speakers, boolean panel, int brightness)
 	{
-		if (setXpsColors((char) (fans ? color : 0), (char) (speakers ? color : 0), (char) (panel ? color : 0), (char) brightness,
-				(char) 0x00) == 0)
+		synchronized (LEDs.class)
 		{
-			Activator.getDefault().getLog().log(
-					new Status(IStatus.ERROR, Activator.PLUGIN_ID, Status.OK, "Failed to set XPS LEDs", null));
+			if (setXpsColors((char) (fans ? color : 0), (char) (speakers ? color : 0), (char) (panel ? color : 0),
+					(char) brightness, (char) 0x00) == 0)
+			{
+				Activator.getDefault().getLog().log(
+						new Status(IStatus.ERROR, Activator.PLUGIN_ID, Status.OK, "Failed to set XPS LEDs", null));
+			}
 		}
 	}
 
 	/**
 	 * Native C function to set the XPS' LEDs.
 	 * 
-	 * @param side_color
-	 *            Color of the side LEDs, where color is in the range 0-16
-	 * @param front_color
-	 *            Color of the front LEDs, where color is in the range 0-16
-	 * @param top_color
-	 *            Color of the top LEDs, where color is in the range 0-16
-	 * @param brightness
-	 *            Brightness of the LEDs, where brightness is in the range 0-7
-	 * @param touchpad_light
-	 *            Enable touchpad LED (as 0 or 1)
+	 * @param side_color Color of the side LEDs, where color is in the range
+	 *            0-16
+	 * @param front_color Color of the front LEDs, where color is in the range
+	 *            0-16
+	 * @param top_color Color of the top LEDs, where color is in the range 0-16
+	 * @param brightness Brightness of the LEDs, where brightness is in the
+	 *            range 0-7
+	 * @param touchpad_light Enable touchpad LED (as 0 or 1)
 	 * @return 0 when a problem occurred, 1 otherwise
 	 */
 	private static native int setXpsColors(char side_color, char front_color, char top_color, char brightness, char touchpad_light);
