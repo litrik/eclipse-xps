@@ -7,6 +7,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/* Inaccessible static: class_000240 */
 /*
  * Class:     com_litrik_eclipse_xps_core_LEDs
  * Method:    setXpsColors
