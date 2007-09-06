@@ -16,10 +16,13 @@
 
 package com.litrik.eclipse.xps.junit;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.junit.ITestRunListener;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.litrik.eclipse.xps.Activator;
+import com.litrik.eclipse.xps.core.LEDException;
 import com.litrik.eclipse.xps.core.LEDs;
 import com.litrik.eclipse.xps.preferences.XPSPreferenceConstants;
 
@@ -29,7 +32,7 @@ import com.litrik.eclipse.xps.preferences.XPSPreferenceConstants;
 public class XPSTestRunListener implements ITestRunListener, Runnable
 {
 	/**
-	 * Indicates whether a failure occured during the test run.
+	 * Indicates whether a failure occurred during the test run.
 	 */
 	private volatile boolean hasFailures;
 
@@ -131,43 +134,51 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 	{
 		Thread thisThread = Thread.currentThread();
 		// The maximum pulse/brightness
-		int maxPulse = store.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS) - 1 ;
+		int maxPulse = store.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS) - 1;
 		// The current pulse/brightness
 		int pulse = store.getBoolean(XPSPreferenceConstants.P_JUNIT_PULSATE) ? 0 : maxPulse;
 		try
 		{
-			while (ledThread == thisThread) // http://java.sun.com/j2se/1.4.2/docs/guide/misc/threadPrimitiveDeprecation.html
+			try
 			{
+				while (ledThread == thisThread) // http://java.sun.com/j2se/1.4.2/docs/guide/misc/threadPrimitiveDeprecation.html
+				{
+					LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
+							.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS), store
+							.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL), Math.abs(pulse) + 1);
+					if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_PULSATE))
+					{
+						// Calculate new pulse/brightness
+						pulse = (pulse == -maxPulse) ? (maxPulse - 1) : (pulse - 1) % (maxPulse + 1);
+					}
+					Thread.sleep(50);
+				}
+				// We have stopped. Set brightness to preferred value.
 				LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
 						.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS), store
-						.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL), Math.abs(pulse) + 1);
-				if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_PULSATE))
+						.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL), store
+						.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS));
+				// Should we time-out and turn the LEDs off?
+				if (hasFailures && store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_FAILURE) > 0)
 				{
-					// Calculate new pulse/brightness
-					pulse = (pulse == -maxPulse) ? (maxPulse - 1) : (pulse - 1) % (maxPulse + 1);
+					Thread.sleep(store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_FAILURE) * 1000);
+					LEDs.setLeds(0, true, true, true, 0);
 				}
-				Thread.sleep(50);
+				else if (!hasFailures && store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_SUCCESS) > 0)
+				{
+					Thread.sleep(store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_SUCCESS) * 1000);
+					LEDs.setLeds(0, true, true, true, 0);
+				}
 			}
-			// We have stopped. Set brightness to preferred value.
-			LEDs.setLeds(color, store.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_FANS), store
-					.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_SPEAKERS), store
-					.getBoolean(XPSPreferenceConstants.P_JUNIT_LOCATION_PANEL), store
-					.getInt(XPSPreferenceConstants.P_JUNIT_BRIGHTNESS));
-			// Should we time-out and turn the LEDs off?
-			if (hasFailures && store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_FAILURE) > 0)
+			catch (InterruptedException e)
 			{
-				Thread.sleep(store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_FAILURE) * 1000);
-				LEDs.setLeds(0, true, true, true, 0);
-			}
-			else if (!hasFailures && store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_SUCCESS) > 0)
-			{
-				Thread.sleep(store.getInt(XPSPreferenceConstants.P_JUNIT_TIMEOUT_SUCCESS) * 1000);
 				LEDs.setLeds(0, true, true, true, 0);
 			}
 		}
-		catch (InterruptedException e)
+		catch (LEDException e)
 		{
-			LEDs.setLeds(0, true, true, true, 0);
+			Activator.getDefault().getLog().log(
+					new Status(IStatus.ERROR, Activator.PLUGIN_ID, Status.OK, LEDException.MESSAGE, e));
 		}
 	}
 }

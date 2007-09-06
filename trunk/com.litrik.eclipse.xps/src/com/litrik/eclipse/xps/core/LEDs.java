@@ -16,17 +16,11 @@
 
 package com.litrik.eclipse.xps.core;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-
-import com.litrik.eclipse.xps.Activator;
-
+/**
+ * Core class to set the XPS' LEDs.
+ */
 public class LEDs
 {
-	private static String ERROR_MESSAGE = "An unexpected error occurred when setting the XPS LEDs. This message will not be logged again.";
-
-	private static boolean firstError = true;
-
 	/**
 	 * Set the XPS' LEDs.
 	 * 
@@ -34,20 +28,16 @@ public class LEDs
 	 * @param fans Indicates whether fan LEDs should be used
 	 * @param speakers Indicates whether speaker LEDs should be used
 	 * @param panel Indicates whether panel LEDs should be used
+	 * @throws LEDException Thrown when a problem occurs while setting the LEDs
 	 */
-	public static void setLeds(int color, boolean fans, boolean speakers, boolean panel, int brightness)
+	public static void setLeds(int color, boolean fans, boolean speakers, boolean panel, int brightness) throws LEDException
 	{
 		synchronized (LEDs.class)
 		{
 			if (setXpsColors((char) (fans ? color : 0), (char) (speakers ? color : 0), (char) (panel ? color : 0),
 					(char) brightness, (char) 0x00) == 0)
 			{
-				if (firstError)
-				{
-					Activator.getDefault().getLog().log(
-							new Status(IStatus.ERROR, Activator.PLUGIN_ID, Status.OK, ERROR_MESSAGE, null));
-					firstError = false;
-				}
+				throw new LEDException();
 			}
 		}
 	}
