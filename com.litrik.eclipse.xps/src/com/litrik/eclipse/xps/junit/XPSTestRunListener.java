@@ -115,6 +115,7 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 		if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_ENABLED))
 		{
 			color = store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE);
+			hasFailures = true;
 			// Tell the thread to stop
 			ledThread = null;
 		}
@@ -122,7 +123,13 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 
 	public void testRunTerminated()
 	{
-	// Not interested in this event
+		if (store.getBoolean(XPSPreferenceConstants.P_JUNIT_ENABLED))
+		{
+			color = store.getInt(XPSPreferenceConstants.P_JUNIT_COLOR_FAILURE);
+			hasFailures = true;
+			// Tell the thread to stop
+			ledThread = null;
+		}
 	}
 
 	public void testStarted(String testId, String testName)
