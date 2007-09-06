@@ -16,6 +16,8 @@
 
 package com.litrik.eclipse.xps.preferences;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
@@ -39,6 +41,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 
 import com.litrik.eclipse.xps.Activator;
+import com.litrik.eclipse.xps.core.LEDException;
 import com.litrik.eclipse.xps.core.LEDs;
 
 public class XPSPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage
@@ -187,29 +190,55 @@ public class XPSPreferencePage extends FieldEditorPreferencePage implements IWor
 		// Let the "Preview" buttons do something
 		previewStartButton.addSelectionListener(new SelectionAdapter()
 		{
-			public void widgetSelected(SelectionEvent e)
+			public void widgetSelected(SelectionEvent se)
 			{
-				LEDs.setLeds(startLEDColorFieldEditor.getCurrentValue(), fansBooleanFieldEditor.getBooleanValue(),
-						speakersBooleanFieldEditor.getBooleanValue(), panelBooleanFieldEditor.getBooleanValue(),
-						brightnessScaleFieldEditor.getScaleControl().getSelection());
+				try
+				{
+					LEDs.setLeds(startLEDColorFieldEditor.getCurrentValue(), fansBooleanFieldEditor.getBooleanValue(),
+							speakersBooleanFieldEditor.getBooleanValue(), panelBooleanFieldEditor.getBooleanValue(),
+							brightnessScaleFieldEditor.getScaleControl().getSelection());
+				}
+				catch (LEDException e)
+				{
+					Activator.getDefault().getLog().log(
+							new Status(IStatus.ERROR, Activator.PLUGIN_ID, Status.OK,
+									"An unexpected error occurred when setting the XPS LEDs.", e));
+				}
 			}
 		});
 		previewSuccessButton.addSelectionListener(new SelectionAdapter()
 		{
-			public void widgetSelected(SelectionEvent e)
+			public void widgetSelected(SelectionEvent se)
 			{
-				LEDs.setLeds(successLEDColorFieldEditor.getCurrentValue(), fansBooleanFieldEditor.getBooleanValue(),
-						speakersBooleanFieldEditor.getBooleanValue(), panelBooleanFieldEditor.getBooleanValue(),
-						brightnessScaleFieldEditor.getScaleControl().getSelection());
+				try
+				{
+					LEDs.setLeds(successLEDColorFieldEditor.getCurrentValue(), fansBooleanFieldEditor.getBooleanValue(),
+							speakersBooleanFieldEditor.getBooleanValue(), panelBooleanFieldEditor.getBooleanValue(),
+							brightnessScaleFieldEditor.getScaleControl().getSelection());
+				}
+				catch (LEDException e)
+				{
+					Activator.getDefault().getLog().log(
+							new Status(IStatus.ERROR, Activator.PLUGIN_ID, Status.OK,
+									"An unexpected error occurred when setting the XPS LEDs.", e));
+				}
 			}
 		});
 		previewFailureButton.addSelectionListener(new SelectionAdapter()
 		{
-			public void widgetSelected(SelectionEvent e)
+			public void widgetSelected(SelectionEvent se)
 			{
-				LEDs.setLeds(failureLEDColorFieldEditor.getCurrentValue(), fansBooleanFieldEditor.getBooleanValue(),
-						speakersBooleanFieldEditor.getBooleanValue(), panelBooleanFieldEditor.getBooleanValue(),
-						brightnessScaleFieldEditor.getScaleControl().getSelection());
+				try
+				{
+					LEDs.setLeds(failureLEDColorFieldEditor.getCurrentValue(), fansBooleanFieldEditor.getBooleanValue(),
+							speakersBooleanFieldEditor.getBooleanValue(), panelBooleanFieldEditor.getBooleanValue(),
+							brightnessScaleFieldEditor.getScaleControl().getSelection());
+				}
+				catch (LEDException e)
+				{
+					Activator.getDefault().getLog().log(
+							new Status(IStatus.ERROR, Activator.PLUGIN_ID, Status.OK, LEDException.MESSAGE, e));
+				}
 			}
 		});
 
