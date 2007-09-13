@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contexts>
+	<context id="pref">
+		<description>Use this preference page to configure the XPS LEDs plug-in.</description>
+		<topic href="doc/preferences.html" label="Preferences" />
+		<topic href="doc/overview.html" label="Overview" />
+		<topic href="doc/changes.html" label="Recent changes" />
+	</context>
+</contexts>
