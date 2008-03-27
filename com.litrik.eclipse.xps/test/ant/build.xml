@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test" default="success">
+
+	<target name="success" description="Build that succeeds">
+		<sleep seconds="4"/>
+	</target>
+
+	<target name="fail" description="Build that fails">
+		<sleep seconds="4"/>
+		<fail/>
+	</target>
+
+</project>
