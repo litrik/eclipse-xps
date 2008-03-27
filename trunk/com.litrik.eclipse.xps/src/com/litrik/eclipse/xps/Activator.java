@@ -1,5 +1,5 @@
 /**
- Copyright 2006-2007 Litrik De Roy
+ Copyright 2006-2008 Litrik De Roy
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package com.litrik.eclipse.xps;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import com.litrik.eclipse.xps.core.LEDs;
+
 public class Activator extends AbstractUIPlugin
 {
 
@@ -34,8 +36,7 @@ public class Activator extends AbstractUIPlugin
 	public Activator()
 	{
 		plugin = this;
-		System.loadLibrary("GamingSDK");
-		System.loadLibrary(PLUGIN_ID);
+		LEDs.loadLibraries();
 	}
 
 	public void start(BundleContext context) throws Exception

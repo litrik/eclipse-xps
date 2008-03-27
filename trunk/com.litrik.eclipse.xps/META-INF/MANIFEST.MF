@@ -2,13 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: XPS LEDs Plug-in
 Bundle-SymbolicName: com.litrik.eclipse.xps;singleton:=true
-Bundle-Version: 1.2.0
+Bundle-Version: 2.0.0
 Bundle-Vendor: litrik.com
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.junit,
  org.eclipse.ui,
- org.eclipse.help
+ org.eclipse.help,
+ org.apache.ant
 Eclipse-LazyStart: true
 Bundle-Activator: com.litrik.eclipse.xps.Activator
 Bundle-NativeCode: /lib/com.litrik.eclipse.xps.dll; /lib/dell/xp/GamingSDK.dll; osname=winxp; processor=x86, /lib/com.litrik.eclipse.xps.dll; /lib/dell/vista/GamingSDK.dll; osname=winvista; processor=x86

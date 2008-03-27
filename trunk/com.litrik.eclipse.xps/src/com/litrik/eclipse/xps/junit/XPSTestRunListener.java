@@ -1,5 +1,5 @@
 /**
- Copyright 2006 Litrik De Roy
+ Copyright 2006-2008 Litrik De Roy
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public class XPSTestRunListener implements ITestRunListener, Runnable
 	/**
 	 * The name of the thread changing the LEDs
 	 */
-	private static String ledThreadName = "XPS LEDs";
+	private static String ledThreadName = "XPS JUnit LEDs";
 
 	/**
 	 * The current color
