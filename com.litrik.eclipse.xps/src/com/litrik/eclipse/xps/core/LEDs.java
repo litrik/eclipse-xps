@@ -1,5 +1,5 @@
 /**
- Copyright 2006-2007 Litrik De Roy
+ Copyright 2006-20078 Litrik De Roy
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -21,6 +21,15 @@ package com.litrik.eclipse.xps.core;
  */
 public class LEDs
 {
+	/**
+	 * Load all required native libraries.
+	 */
+	public static void loadLibraries()
+	{
+		System.loadLibrary("GamingSDK");
+		System.loadLibrary("com.litrik.eclipse.xps");
+	}
+
 	/**
 	 * Set the XPS' LEDs.
 	 * 
